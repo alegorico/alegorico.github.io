@@ -16,10 +16,5 @@
   "bugs": {
     "url": "https://github.com/cdmedia/cms.js/issues"
   },
-  "devDependencies": {
-    "grunt": "~0.4.4",
-    "grunt-contrib-copy": "latest",
-    "grunt-contrib-uglify": "latest",
-    "grunt-contrib-watch": "latest"
-  }
+  "devDependencies": {}
 }
