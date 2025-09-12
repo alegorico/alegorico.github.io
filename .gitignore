@@ -5,3 +5,12 @@ release/*
 release.zip
 .idea/
 dev/*
+
+# Jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Gems
+Gemfile.lock
