@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started with Slim Framework - Alegorico</title>
+    <meta name="description" content="A minimalist blog focusing on technology, programming, and development insights.">
+    <meta name="author" content="Alegorico">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    
+    <!-- RSS Feed -->
+    <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Alegorico">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <nav class="site-nav">
+                <a href="/" class="site-title">Alegorico</a>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/pages/about">About</a></li>
+                    <li><a href="/pages/links">Links</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-content">
+        <div class="container">
+            <article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Getting Started with Slim Framework</h1>
+        <div class="post-meta">
+            <time datetime="">
+                
+            </time>
+            
+            <div class="post-tags">
+                
+                <span class="tag">php</span>
+                
+                <span class="tag">framework</span>
+                
+                <span class="tag">mvc</span>
+                
+                <span class="tag">rest</span>
+                
+                <span class="tag">api</span>
+                
+                <span class="tag">slim</span>
+                
+            </div>
+            
+        </div>
+    </header>
+    
+    <div class="post-content">
+        <p>Here’s a quick tutorial to get up and running with Slim PHP Framework to start building
+RESTful applications.</p>
+
+<p><strong>Why a REST API?</strong></p>
+
+<p>A REST API acts like a middle-man between clients (mobile devices, computers) and the database server.
+This type of infrastructure allows clients using completely different technologies
+or operating systems to communicate in one type of protocol. That way as technologies
+change, the method of communication with the database and server logic can remaind
+the same. Just remember, the application we are building is meant to be used
+with client applications and not really meant for actual users to be using it…
+so it’s not going to look very pretty. We will be building <a href="http://codoki.com/2015/03/20/getting-started-with-slim-framework-pt-2/">a nice looking client
+application later</a> that will be used to interact with the API–and that will look pretty.</p>
+
+<p><strong>Why use Slim?</strong></p>
+
+<p>Slim is a micro framework for PHP that allows you to quickly build web applications and APIs.
+I like Slim because it’s super lightweight (only about 283kb for the entire framework) as
+opposed to larger PHP frameworks like Codeigniter and Symfony, which have a lot of extra fluff.
+This means that’s it really fast, and great for building a REST API for use on a multitude of
+devices.</p>
+
+<h3 id="1-install">1. Install</h3>
+
+<p>You can start by downloading it <a href="https://github.com/codeguy/Slim">here</a> and
+extract the Slim framework into your project directory.</p>
+
+<h3 id="2-create-a-database">2. Create a database</h3>
+
+<p>Login into MySQL and create a new database to have our Slim application interact
+with.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE DATABASE garage;
+USE garage;
+CREATE TABLE cars (
+	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	year INT(4) NOT NULL, make VARCHAR(30) NOT NULL,
+	model VARCHAR(40) NOT NULL
+);
+</code></pre></div></div>
+
+<p>Insert some sample data into the database.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>INSERT INTO cars (year, make, model) VALUES
+	(1991, 'Ferrari', 'Testarossa'),
+	(1994, 'Acura', 'NSX'),
+	(1992, 'Toyota', 'Corolla');
+</code></pre></div></div>
+
+<h3 id="3-download-notorm">3. Download NotORM</h3>
+
+<p>We are also going to use a plugin called <a href="http://www.notorm.com/">NotORM</a>
+that will make working with the database easier. Create a <code class="language-plaintext highlighter-rouge">plugins</code> folder in your
+project directory and place the downloaded NotORM plugin inside it. Your directory
+should look like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- .htaccess
+- index.php
+- Slim/
+- plugins/
+- - NotORM/
+- - NotORM.php
+</code></pre></div></div>
+
+<h3 id="4-remove-and-replace-indexphp">4. Remove and replace index.php</h3>
+
+<p>Now, just delete the included <code class="language-plaintext highlighter-rouge">index.php</code> and create a new one as were are going
+to going through it step by step. In your <code class="language-plaintext highlighter-rouge">index.php</code> file add this lines. This
+will require the framework, register the autoloader and instantiate the Slim
+application. Also, we are requiring the NotORM library for handling the database.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/* Require Slim and plugins */
+require 'Slim/Slim.php';
+require 'plugins/NotORM.php';
+
+/* Register autoloader and instantiate Slim */
+\Slim\Slim::registerAutoloader();
+$app = new \Slim\Slim();
+</code></pre></div></div>
+
+<h3 id="5-notorm-database-configuration">5. NotORM Database Configuration</h3>
+
+<p>We need to setup the NotORM library so it can talk with the database:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/* Database Configuration */
+$dbhost   = 'localhost';
+$dbuser   = 'root';
+$dbpass   = '';
+$dbname   = 'garage';
+$dbmethod = 'mysql:dbname=';
+
+$dsn = $dbmethod.$dbname;
+$pdo = new PDO($dsn, $dbuser, $dbpass);
+$db = new NotORM($pdo);
+</code></pre></div></div>
+
+<h3 id="6-setup-our-first-route">6. Setup our first Route</h3>
+
+<p>Now we are going to setup a HTTP GET route for the home URL. In this step, we
+will actually be able to start to see our application work. Below the database
+configuration add:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/* Routes */
+$app-&gt;get('/', function(){
+    echo 'Home - My Slim Application';
+});
+
+/* Run the application */
+$app-&gt;run();
+</code></pre></div></div>
+
+<p>If you visit <code class="language-plaintext highlighter-rouge">http://localhost/slim-cars/</code> you should now see your home message
+from above.</p>
+
+<p>We have the Slim application working, so now we are going to setup routes for
+RESTful Web Services, using GET, PUT, POST and DELETE to handle
+CRUD (Create, Read, Update, Delete) operations.</p>
+
+<h3 id="7-getting-the-cars">7. Getting the Cars</h3>
+
+<p>Now that we have our Slim app up and running, we need to get items from the
+database. We are going to create a new route so that when a user (or device) hits
+your base url and then <code class="language-plaintext highlighter-rouge">/cars</code>, it will return a list of all cars in the database in
+JSON format. Right below your <code class="language-plaintext highlighter-rouge">home</code> route (and above the <code class="language-plaintext highlighter-rouge">$app-&gt;run()</code>) add:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Get all cars
+$app-&gt;get('/cars', function() use($app, $db){
+    $cars = array();
+    foreach ($db-&gt;cars() as $car) {
+        $cars[]  = array(
+            'id' =&gt; $car['id'],
+            'year' =&gt; $car['year'],
+            'make' =&gt; $car['make'],
+            'model' =&gt; $car['model']
+        );
+    }
+    $app-&gt;response()-&gt;header("Content-Type", "application/json");
+    echo json_encode($cars, JSON_FORCE_OBJECT);
+});
+</code></pre></div></div>
+
+<p>Here is what happens: First, we tell Slim we are setting up a HTTP GET Route
+<code class="language-plaintext highlighter-rouge">/cars</code>. We add paramaters <code class="language-plaintext highlighter-rouge">$app</code> and <code class="language-plaintext highlighter-rouge">$db</code> to tell Slim to use the Slim app and
+NotORM database library. We then create an empty cars array and loop through the
+database getting all cars. Finally, we set the repsonse header to JSON and echo
+the cars array as a JSON object. If you hit <code class="language-plaintext highlighter-rouge">http://localhost/slim-cars/cars</code> in
+your browser, you should now see all the cars in the database as JSON.</p>
+
+<p>Alternatively , we can use cURL to test the GET request. Pull up your terminal
+and type:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -i -X GET http://localhost/slim-cars/cars
+</code></pre></div></div>
+
+<p>You should get a response similar to this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 200 OK
+Date: Wed, 18 Feb 2015 14:24:19 GMT
+Server: Apache/2.4.9 (Unix) PHP/5.5.14
+X-Powered-By: PHP/5.5.14
+Content-Length: 189
+Content-Type: application/json
+
+{"0":{"id":"1","year":"1991","make":"Ferrari","model":"Testarossa"},"1":{"id":"2","year":"1994","make":"Acura","model":"NSX"},"2":{"id":"3","year":"1992","make":"Toyota","model":"Corolla"}}
+</code></pre></div></div>
+
+<h3 id="8-getting-a-single-car">8. Getting A Single Car</h3>
+
+<p>We’ve setup a route to get all the cars, but what if we just want a single car?
+We’ll follow a similar structure as above:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Get a single car
+$app-&gt;get('/cars/:id', function($id) use ($app, $db) {
+    $app-&gt;response()-&gt;header("Content-Type", "application/json");
+    $car = $db-&gt;cars()-&gt;where('id', $id);
+    if($data = $car-&gt;fetch()){
+        echo json_encode(array(
+            'id' =&gt; $data['id'],
+            'year' =&gt; $data['year'],
+            'make' =&gt; $data['make'],
+            'model' =&gt; $data['model']
+        ));
+    }
+    else{
+        echo json_encode(array(
+            'status' =&gt; false,
+            'message' =&gt; "Car ID $id does not exist"
+        ));
+    }
+});
+</code></pre></div></div>
+
+<p>Similar to getting all the cars, we create a GET Route but this time we have a
+callback argument <code class="language-plaintext highlighter-rouge">:id</code> added after <code class="language-plaintext highlighter-rouge">cars/</code>. This id is passed into the function
+and then reads the cars from the database, finding only the car that matches the
+id. Then, it encodes the result into JSON format and echos it back. If the car id
+doesn’t exist, it returns an error message.</p>
+
+<p>Now let’s test it out using cURL:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -i -X GET http://localhost/slim-cars/cars/1
+</code></pre></div></div>
+
+<p>You should get back:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 200 OK
+Date: Wed, 18 Feb 2015 14:24:37 GMT
+Server: Apache/2.4.9 (Unix) PHP/5.5.14
+X-Powered-By: PHP/5.5.14
+Content-Length: 62
+Content-Type: application/json
+
+{"id":"1","year":"1991","make":"Ferrari","model":"Testarossa"}
+</code></pre></div></div>
+
+<h3 id="9-adding-a-car">9. Adding a Car</h3>
+
+<p>We retrieved cars from the database, but what about adding a new one? We will be
+using the POST web service to signal creation of a new car in the database. To
+do this, let’s add this below the <code class="language-plaintext highlighter-rouge">Get a single car</code> route:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Add a new car
+$app-&gt;post('/car', function() use($app, $db){
+    $app-&gt;response()-&gt;header("Content-Type", "application/json");
+    $car = $app-&gt;request()-&gt;post();
+    $result = $db-&gt;cars-&gt;insert($car);
+    echo json_encode(array('id' =&gt; $result['id']));
+});
+</code></pre></div></div>
+
+<p>Let’s use cURL to try adding a new car.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -X POST -d "year=1981&amp;make=DeLorean&amp;model=DMC-12" http://localhost/slim-cars/car
+</code></pre></div></div>
+
+<p>If you log back into MySQL, you should now see your new car added to the database.</p>
+
+<h3 id="10-updating-a-car">10. Updating a Car</h3>
+
+<p>Now we are going to add an UPDATE route in order to edit current cars in the
+database. To do this, we are going to be using the PUT method:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Update a car
+$app-&gt;put('/car/:id', function($id) use($app, $db){
+    $app-&gt;response()-&gt;header("Content-Type", "application/json");
+    $car = $db-&gt;cars()-&gt;where("id", $id);
+    if ($car-&gt;fetch()) {
+        $post = $app-&gt;request()-&gt;put();
+        $result = $car-&gt;update($post);
+        echo json_encode(array(
+            "status" =&gt; (bool)$result,
+            "message" =&gt; "Car updated successfully"
+            ));
+    }
+    else{
+        echo json_encode(array(
+            "status" =&gt; false,
+            "message" =&gt; "Car id $id does not exist"
+        ));
+    }
+});
+</code></pre></div></div>
+
+<p>Similar to getting a single car, we are using a callback argument <code class="language-plaintext highlighter-rouge">:id</code> to tell
+the application which car we want to edit. We then grab the car with the correct
+id from the database and update it. If the update was successful, we’ll echo a
+success message. If the car doesn’t exist, well echo that the car doesn’t exist.</p>
+
+<p>We can test this out using cURL PUT method in terminal:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -X PUT -d "year=2015&amp;make=Lamborghini&amp;model=700-4" http://localhost/slim-cars/car/3
+</code></pre></div></div>
+
+<h3 id="11-removing-a-car">11. Removing a Car</h3>
+
+<p>The last thing we need to be able to do is remove a car. We are going to be using
+the DELETE method to remove cars. Here’s how we are going to setup our DELETE route:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Remove a car
+$app-&gt;delete('/car/:id', function($id) use($app, $db){
+    $app-&gt;response()-&gt;header("Content-Type", "application/json");
+    $car = $db-&gt;cars()-&gt;where('id', $id);
+    if($car-&gt;fetch()){
+        $result = $car-&gt;delete();
+        echo json_encode(array(
+            "status" =&gt; true,
+            "message" =&gt; "Car deleted successfully"
+        ));
+    }
+    else{
+        echo json_encode(array(
+            "status" =&gt; false,
+            "message" =&gt; "Car id $id does not exist"
+        ));
+    }
+});
+</code></pre></div></div>
+
+<p>Similar to above, we are using the callback argument to get a specific car by their
+id. Then, we find that car in the database and delete it using NotORM’s <code class="language-plaintext highlighter-rouge">delete()</code>
+method. We will then echo back a message if the car was successfully deleted, or if
+the car does not exist.</p>
+
+<p>We can test out this functionality using cURL DELETE:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -i -X DELETE http://localhost/slim-cars/car/4
+</code></pre></div></div>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>We’ll there you have it, we have just built a RESTful application that can be used to GET, POST,
+PUT and DELETE items from the database. This is a great starting point and can be
+expanded to include more methods, routes, and even authentication.</p>
+
+<p>You can download the source of this app in a step by step (in GIT) version on <a href="https://github.com/cdmedia/slim-cars">Github</a>.</p>
+
+<p>The next step in this tutorial is to create a client that will communicate with
+this REST API that we’ve just built - <a href="http://codoki.com/2015/03/20/getting-started-with-slim-framework-pt-2/">Getting Started with Slim Framework - Part 2</a></p>
+
+<hr />
+<p>Other Resources</p>
+
+<ul>
+  <li><a href="http://docs.slimframework.com">Slim Documentation</a></li>
+  <li><a href="http://coenraets.org/blog/2011/12/restful-services-with-jquery-php-and-the-slim-framework/">RESTful services with jQuery, PHP and the Slim Framework</a></li>
+  <li><a href="http://www.sitepoint.com/writing-a-restful-web-service-with-slim/">Writing a RESTful Web Service with Slim</a></li>
+  <li><a href="http://code.tutsplus.com/tutorials/taming-slim-20--net-30669">Taming Slim 2.0</a></li>
+  <li><a href="http://www.slimframework.com/news/how-to-organize-a-large-slim-framework-application">How to organize a large slim application</a></li>
+  <li><a href="http://curl.haxx.se/docs/">cURL Docs</a></li>
+</ul>
+
+    </div>
+    
+    <nav class="post-nav">
+        <div class="post-nav-links">
+            
+            
+            <a href="/" class="home-link">Back to Home</a>
+            
+            
+        </div>
+    </nav>
+</article>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Alegorico. Minimal design, maximum impact.</p>
+        </div>
+    </footer>
+</body>
+</html>

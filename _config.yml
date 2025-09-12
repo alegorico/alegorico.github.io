@@ -1,0 +1,43 @@
+# Site settings
+title: Alegorico
+description: "A minimalist blog focusing on technology, programming, and development insights."
+author: Alegorico
+url: "https://alegorico.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: /posts/:title/
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /posts/:title/
+
+# Plugins
+# plugins:
+#   - jekyll-feed
+#   - jekyll-sitemap
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .sass-cache
+  - .jekyll-cache
+
+# Default front matter
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: "pages"
+    values:
+      layout: "default"
