@@ -14,8 +14,7 @@ It takes your content, renders Markdown and delivers a complete website in Singl
 
 
 <p align="center">
-  <span>English</span> |
-  <a href="./README-zh.md">简体中文</a>
+  <span>English</span>
 </p>
 
 
