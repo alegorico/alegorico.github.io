@@ -1,54 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="My site - Technical blog about development">
     <title>AlegoricSite - Alejandro G</title>
-    <meta name="description" content="My site">
-    <meta name="author" content="Alejandro G">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
-    <link rel="stylesheet" href="./examples/css/animations.css">
-    <link rel="stylesheet" href="./examples/css/poole.min.css">
-    <link rel="stylesheet" href="./examples/css/poole.overrides.min.css">
-    <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
     <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    <link rel="stylesheet" href="./examples/css/pure-blog.css">
     <noscript>Please enable JavaScript to view this site.</noscript>
   </head>
   <body>
-    <!-- Main Container -->
-    <div class="container content">
-      <!-- Header -->
-      <header class="masthead">
-        <h3 class="masthead-title">
-        <a href="#" class="sitename" title="Home">
-          AlegoricSite
-        </a>
-        <small class="tagline">
-          My site
-        </small>
-        </h3>
-        <!-- Navigation -->
-        <nav class="nav">
-          <ul>
-            <li><a href="#/posts">Posts</a></li>
-            <li><a href="https://github.com/alegorico" target="_blank">Github</a></li>
-            <li><a href="#/pages/about">About</a></li>
-          </ul>
-        </nav>
-      </header>
-
-      <!-- CMS -->
-      <div id="cms"></div>
-
-      <!-- Footer -->
-      <footer class="footer">
-        <small class="footer-text">
-          &copy; <script>document.write(new Date().getFullYear())</script> All Rights Reserved.
-        </small>
-      </footer>
+    <div id="layout" class="pure-g">
+      <div class="sidebar pure-u-1 pure-u-md-1-4">
+        <div class="header">
+          <h1 class="brand-title">AlegoricSite</h1>
+          <h2 class="brand-tagline">My site</h2>
+          <nav class="nav">
+            <ul class="nav-list">
+              <li class="nav-item">
+                <a class="pure-button" href="#/posts">Posts</a>
+              </li>
+              <li class="nav-item">
+                <a class="pure-button" href="#/pages/about">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="pure-button" href="https://github.com/alegorico" target="_blank">Github</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+          <!-- A wrapper for all the blog posts -->
+          <div class="posts">
+            
+            <!-- CMS -->
+            <div id="cms"></div>
+            
+          </div>
+          <div class="footer">
+            <div class="pure-menu pure-menu-horizontal">
+              <ul>
+                <li class="pure-menu-item"><a href="#/pages/about" class="pure-menu-link">About</a></li>
+                <li class="pure-menu-item"><a href="#/posts" class="pure-menu-link">Posts</a></li>
+                <li class="pure-menu-item"><a href="https://github.com/alegorico" class="pure-menu-link">Github</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
+    
     <!-- CMS.js -->
     <script src="./dist/cms.js"></script>
     <!-- Config -->
