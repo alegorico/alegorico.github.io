@@ -1,56 +1,69 @@
-import resolve from 'rollup-plugin-node-resolve';
-import livereload from 'rollup-plugin-livereload';
-import babel from 'rollup-plugin-babel';
-import { eslint } from 'rollup-plugin-eslint';
-import { uglify } from 'rollup-plugin-uglify';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import { babel } from '@rollup/plugin-babel';
+import { terser } from '@rollup/plugin-terser';
+import livereload from 'rollup-plugin-livereload';
+import { readFileSync } from 'fs';
 
-const { name, version, license, author, homepage } = require('./package.json');
+const packageJson = JSON.parse(readFileSync('./package.json', 'utf8'));
+const { name, version, license, author, homepage } = packageJson;
 const production = !process.env.ROLLUP_WATCH;
 const banner = `/*! ${name} v${version} | ${license} (c) ${new Date().getFullYear()} ${author.name} | ${homepage} */`;
 
 const outputs = [];
 
-if(production) {
+if (production) {
   outputs.push({
     file: 'dist/cms.min.js',
     name: 'CMS',
     format: 'iife',
     banner: banner,
     plugins: [
-      uglify({ output: { comments: /^!/ } }),
-    ],
+      terser({ 
+        format: { 
+          comments: /^!/ 
+        }
+      })
+    ]
   });
   outputs.push({
     file: 'dist/cms.js',
     name: 'CMS',
     format: 'iife',
-    banner: banner,
+    banner: banner
   });
   outputs.push({
     file: 'dist/cms.es.js',
     name: 'CMS',
     format: 'es',
-    banner: banner,
+    banner: banner
   });
 } else {
   outputs.push({
     file: 'examples/js/cms.js',
     name: 'CMS',
     format: 'iife',
-    banner: banner,
+    banner: banner
   });
 }
 
 export default {
-    input: 'src/main.js',
-		external: ['CMS'],
-    output: outputs,
-    plugins: [
-      eslint(),
-      !production && livereload(),
-      resolve(),
-			commonjs(),
-      babel({ exclude: 'node_modules/**' }),
-    ],
+  input: 'src/main.js',
+  external: ['CMS'],
+  output: outputs,
+  plugins: [
+    nodeResolve({
+      browser: true,
+      preferBuiltins: false
+    }),
+    commonjs(),
+    babel({ 
+      exclude: 'node_modules/**',
+      babelHelpers: 'bundled',
+      presets: ['@babel/preset-env']
+    }),
+    !production && livereload({
+      watch: ['dist', 'examples']
+    })
+  ]
 };

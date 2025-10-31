@@ -1,19 +1,31 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es2022": true,
+    "node": true
   },
   "globals": {
     "ENV": true
   },
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "prettier"
+  ],
   "parserOptions": {
+    "ecmaVersion": 2022,
     "sourceType": "module"
   },
+  "plugins": ["prettier"],
   "rules": {
-    "indent": ["error", 2],
+    "prettier/prettier": "error",
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"]
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "semi": ["error", "always"],
+    "no-console": "warn",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-trailing-spaces": "error",
+    "eol-last": "error",
+    "comma-dangle": ["error", "never"]
   }
 }
