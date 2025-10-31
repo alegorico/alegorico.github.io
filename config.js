@@ -12,7 +12,7 @@ var config = {
     username: 'alegorico',
     repo: 'alegorico.github.io',
     branch: 'gh-pages',
-    host: 'https://api.github.com',
+    host: 'https://api.github.com'
   },
 
   // The name of the layouts directory.
