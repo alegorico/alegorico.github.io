@@ -3,10 +3,11 @@ let messageContainer;
 const messages = {
   NO_FILES_ERROR: 'ERROR: No files in directory',
   ELEMENT_ID_ERROR: 'ERROR: No element ID or ID incorrect. Check "elementId" parameter in config.',
-  DIRECTORY_ERROR: 'ERROR: Error getting files. Make sure there is a directory for each type in config with files in it.',
+  DIRECTORY_ERROR:
+    'ERROR: Error getting files. Make sure there is a directory for each type in config with files in it.',
   GET_FILE_ERROR: 'ERROR: Error getting the file',
   LAYOUT_LOAD_ERROR: 'ERROR: Error loading layout. Check the layout file to make sure it exists.',
-  NOT_READY_WARNING: 'WARNING: Not ready to perform action',
+  NOT_READY_WARNING: 'WARNING: Not ready to perform action'
 };
 
 /**
@@ -37,8 +38,4 @@ function handleMessage(debug, message) {
   return message;
 }
 
-export {
-  messages,
-  createMessageContainer,
-  handleMessage,
-};
+export { messages, createMessageContainer, handleMessage };

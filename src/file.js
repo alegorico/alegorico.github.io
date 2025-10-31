@@ -1,5 +1,5 @@
 import { renderLayout } from './templater';
-import { get, extend, getDatetime} from './utils';
+import { get, extend, getDatetime } from './utils';
 import Markdown from './markdown';
 
 /**
@@ -10,7 +10,6 @@ import Markdown from './markdown';
  * @param {object} layout - The layout templates of the file.
  */
 class File {
-
   constructor(url, type, layout, config) {
     this.url = type === 'SERVER' ? type + '/' + url : url;
     this.type = type;
@@ -31,14 +30,14 @@ class File {
   }
 
   /**
-  * Get file content.
-  * @method
-  * @async
-  * @param {function} callback - Callback function.
-  * @description
-  * Get the file's HTML content and set the file object html
-  * attribute to the file content.
-  */
+   * Get file content.
+   * @method
+   * @async
+   * @param {function} callback - Callback function.
+   * @description
+   * Get the file's HTML content and set the file object html
+   * attribute to the file content.
+   */
   getContent(callback) {
     get(this.url, (success, error) => {
       if (error) callback(success, error);
@@ -61,7 +60,7 @@ class File {
     var yaml = this.content.split(this.config.frontMatterSeperator)[1];
     if (yaml) {
       var attributes = {};
-      yaml.split(/\n/g).forEach((attributeStr) => {
+      yaml.split(/\n/g).forEach(attributeStr => {
         var attribute = attributeStr.split(':');
         attribute[1] && (attributes[attribute[0].trim()] = attribute[1].trim());
       });
@@ -77,9 +76,9 @@ class File {
    * an array by splitting the string by commas.
    */
   setListAttributes() {
-    this.config.listAttributes.forEach((attribute) => {
-      if (this.hasOwnProperty(attribute) && this[attribute]) {
-        this[attribute] = this[attribute].split(',').map((item) => {
+    this.config.listAttributes.forEach(attribute => {
+      if (Object.prototype.hasOwnProperty.call(this, attribute) && this[attribute]) {
+        this[attribute] = this[attribute].split(',').map(item => {
           return item.trim();
         });
       }
@@ -91,7 +90,8 @@ class File {
    * @method
    */
   setFilename() {
-    this.name = this.url.substr(this.url.lastIndexOf('/'))
+    this.name = this.url
+      .substr(this.url.lastIndexOf('/'))
       .replace('/', '')
       .replace(this.config.extension, '');
   }
@@ -169,7 +169,6 @@ class File {
   render() {
     return renderLayout(this.layout, this.config, this);
   }
-
 }
 
 export default File;

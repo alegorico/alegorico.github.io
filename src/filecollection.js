@@ -10,7 +10,6 @@ import File from './file';
  * @param {object} layout - The layouts of the file collection type.
  */
 class FileCollection {
-
   constructor(type, layout, config) {
     this.type = type;
     this.layout = layout;
@@ -42,7 +41,7 @@ class FileCollection {
    * @returns {string} URL of file list
    */
   getFileListUrl(type, config) {
-    return (config.mode === 'GITHUB') ? getGithubUrl(type, config.github) : type;
+    return config.mode === 'GITHUB' ? getGithubUrl(type, config.github) : type;
   }
 
   /**
@@ -52,7 +51,9 @@ class FileCollection {
    * @returns {string} File URL
    */
   getFileUrl(file, mode, type) {
-    return (mode === 'GITHUB') ? file['download_url'] : `${type}/${getFilenameFromPath(file.getAttribute('href'))}`;
+    return mode === 'GITHUB'
+      ? file['download_url']
+      : `${type}/${getFilenameFromPath(file.getAttribute('href'))}`;
   }
 
   /**
@@ -88,7 +89,7 @@ class FileCollection {
     get(this.getFileListUrl(this.type, this.config), (success, error) => {
       if (error) callback(success, error);
       // find the file elements that are valid files, exclude others
-      this.getFileElements(success).forEach((file) => {
+      this.getFileElements(success).forEach(file => {
         var fileUrl = this.getFileUrl(file, this.config.mode, this.type);
         if (isValidFile(fileUrl, this.config.extension)) {
           this.files.push(new File(fileUrl, this.type, this.layout.single, this.config));
@@ -128,7 +129,7 @@ class FileCollection {
    * @returns {object} File object
    */
   search(attribute, search) {
-    this[this.type] = this.files.filter((file) => {
+    this[this.type] = this.files.filter(file => {
       var attr = file[attribute].toLowerCase().trim();
       return attr.indexOf(search.toLowerCase().trim()) >= 0;
     });
@@ -149,9 +150,9 @@ class FileCollection {
    * @returns {array} Files array
    */
   getByTag(query) {
-    this[this.type] = this.files.filter((file) => {
+    this[this.type] = this.files.filter(file => {
       if (query && file.tags) {
-        return file.tags.some((tag) => {
+        return file.tags.some(tag => {
           return tag === query;
         });
       }
@@ -165,7 +166,7 @@ class FileCollection {
    * @returns {object} File object.
    */
   getFileByPermalink(permalink) {
-    return this.files.filter((file) => {
+    return this.files.filter(file => {
       return file.permalink === permalink;
     })[0];
   }
@@ -179,7 +180,6 @@ class FileCollection {
   render() {
     return renderLayout(this.layout.list, this.config, this);
   }
-
 }
 
 export default FileCollection;

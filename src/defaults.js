@@ -10,8 +10,8 @@ const defaults = {
   frontMatterSeperator: /^---$/m,
   listAttributes: ['tags'],
   dateParser: /\d{4}-\d{2}(?:-\d{2})?/,
-  dateFormat: (date) => {
-    return [(date.getMonth() + 1), date.getDate(), date.getFullYear()].join('/');
+  dateFormat: date => {
+    return [date.getMonth() + 1, date.getDate(), date.getFullYear()].join('/');
   },
   extension: '.md',
   sort: undefined,
@@ -19,7 +19,7 @@ const defaults = {
   debug: false,
   messageClassName: 'cms-messages',
   onload: () => {},
-  onroute: () => {},
+  onroute: () => {}
 };
 
 export default defaults;

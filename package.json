@@ -1,8 +1,9 @@
 {
   "name": "@chrisdiana/cmsjs",
   "version": "2.0.1",
+  "type": "module",
   "description": "The JavaScript Site Generator.",
-  "keywords": "client-side, javascript, site-generator",
+  "keywords": ["client-side", "javascript", "site-generator"],
   "homepage": "https://github.com/chrisdiana/cms.js",
   "scripts": {
     "build": "rollup -c",

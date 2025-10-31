@@ -8,7 +8,7 @@
 export function get(url, callback) {
   var req = new XMLHttpRequest();
   req.open('GET', url, true);
-  req.onreadystatechange = function() {
+  req.onreadystatechange = function () {
     if (req.readyState === 4) {
       if (req.status === 200) {
         callback(req.response, false);
@@ -66,7 +66,7 @@ export function getFunctionName(func) {
 export function isValidFile(fileUrl, extension) {
   if (fileUrl) {
     var ext = fileUrl.split('.').pop();
-    return (ext === extension.replace('.', '') || ext === 'html') ? true : false;
+    return ext === extension.replace('.', '') || ext === 'html' ? true : false;
   }
 }
 
@@ -76,12 +76,17 @@ export function isValidFile(fileUrl, extension) {
  * @returns {string} URL Path
  */
 export function getPathsWithoutParameters() {
-  return window.location.hash.split('/').map((path) => {
-    if (path.indexOf('?') >= 0) {
-      path = path.substring(0, path.indexOf('?'));
-    }
-    return path;
-  }).filter((path) => { return path !== '#'; });
+  return window.location.hash
+    .split('/')
+    .map(path => {
+      if (path.indexOf('?') >= 0) {
+        path = path.substring(0, path.indexOf('?'));
+      }
+      return path;
+    })
+    .filter(path => {
+      return path !== '#';
+    });
 }
 
 /**
@@ -100,7 +105,6 @@ export function getParameterByName(name, url) {
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
-
 
 /**
  * Get Github URL based on configuration.
@@ -121,7 +125,7 @@ export function getGithubUrl(type, gh) {
  */
 export function getDatetime(dateStr) {
   var dt = new Date(dateStr);
-  return new Date(dt.getTime() - dt.getTimezoneOffset() * (-60000));
+  return new Date(dt.getTime() - dt.getTimezoneOffset() * -60000);
 }
 
 /**
