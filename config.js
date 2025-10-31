@@ -38,4 +38,12 @@ var config = {
 };
 
 // Initialize CMS.js
+console.log('Initializing CMS with config:', config);
 var blog = CMS(config);
+
+// Debug: Check if CMS loaded
+setTimeout(function() {
+  var cmsElement = document.getElementById('cms');
+  console.log('CMS element content:', cmsElement ? cmsElement.innerHTML : 'Element not found');
+  console.log('Posts directory exists:', typeof blog !== 'undefined');
+}, 2000);
