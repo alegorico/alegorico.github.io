@@ -3,4 +3,5 @@ node_modules/*
 release/*
 *.swp
 npm-debug.log
+dist/cms.js
 examples/js/cms.js

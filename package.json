@@ -8,13 +8,13 @@
     "build": "rollup -c",
     "watch": "rollup -c -w",
     "dev": "npm-run-all2 --parallel serve watch",
-    "serve": "serve ./examples/ -p 3000",
+    "serve": "serve . -p 3000",
     "start": "npm run dev",
     "lint": "eslint src --ext .js",
     "lint:fix": "eslint src --ext .js --fix",
     "format": "prettier --write src/**/*.js",
     "test": "echo \"Tests not implemented yet\" && exit 0",
-    "clean": "rm -rf dist"
+    "clean": "echo 'Clean: manually delete dist/cms.js and examples/js/cms.js'"
   },
   "main": "dist/cms.js",
   "module": "dist/cms.es.js",

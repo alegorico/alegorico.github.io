@@ -40,6 +40,13 @@ if (production) {
   });
 } else {
   outputs.push({
+    file: 'dist/cms.js',
+    name: 'CMS',
+    format: 'iife',
+    banner: banner
+  });
+  // También generar para examples durante desarrollo
+  outputs.push({
     file: 'examples/js/cms.js',
     name: 'CMS',
     format: 'iife',
@@ -63,7 +70,7 @@ export default {
       presets: ['@babel/preset-env']
     }),
     !production && livereload({
-      watch: ['dist', 'examples']
+      watch: ['dist', '.']
     })
   ]
 };
