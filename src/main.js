@@ -7,4 +7,4 @@
  */
 import CMS from './cms';
 
-export default (options) => new CMS(window, options);
+export default options => new CMS(window, options);

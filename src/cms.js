@@ -10,7 +10,6 @@ import { renderLayout } from './templater';
  * @param {object} options - Configuration options.
  */
 class CMS {
-
   constructor(view, options) {
     this.ready = false;
     this.collections = {};
@@ -67,7 +66,7 @@ class CMS {
     var types = [];
 
     // setup collections and routes
-    this.config.types.forEach((type) => {
+    this.config.types.forEach(type => {
       this.collections[type.name] = new FileCollection(type.name, type.layout, this.config);
       types.push(type.name);
     });
@@ -138,7 +137,7 @@ class CMS {
    * Set up plugins based on user configuration.
    */
   registerPlugins() {
-    this.config.plugins.forEach((plugin) => {
+    this.config.plugins.forEach(plugin => {
       const name = getFunctionName(plugin);
       if (!this[name]) {
         this[name] = plugin;
@@ -147,11 +146,11 @@ class CMS {
   }
 
   /**
-    * Sort method for file collections.
-    * @method
-    * @param {string} type - Type of file collection.
-    * @param {function} sort - Sorting function.
-    */
+   * Sort method for file collections.
+   * @method
+   * @param {string} type - Type of file collection.
+   * @param {function} sort - Sorting function.
+   */
   sort(type, sort) {
     if (this.ready) {
       this.collections[type][type].sort(sort);
@@ -162,12 +161,12 @@ class CMS {
   }
 
   /**
-    * Search method for file collections.
-    * @method
-    * @param {string} type - Type of file collection.
-    * @param {string} attribute - File attribute to search.
-    * @param {string} search - Search query.
-    */
+   * Search method for file collections.
+   * @method
+   * @param {string} type - Type of file collection.
+   * @param {string} attribute - File attribute to search.
+   * @param {string} search - Search query.
+   */
   search(type, attribute, search) {
     if (this.ready) {
       this.collections[type].search(attribute, search);
@@ -176,7 +175,6 @@ class CMS {
       handleMessage(msg['NOT_READY_WARNING']);
     }
   }
-
 }
 
 export default CMS;

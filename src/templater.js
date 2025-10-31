@@ -11,10 +11,10 @@ export function Templater(text) {
   return new Function(
     'data',
     'var output=' +
-    JSON.stringify(text)
-      .replace(/<%=(.+?)%>/g, '"+($1)+"')
-      .replace(/<%(.+?)%>/g, '";$1\noutput+="') +
-    ';return output;'
+      JSON.stringify(text)
+        .replace(/<%=(.+?)%>/g, '"+($1)+"')
+        .replace(/<%(.+?)%>/g, '";$1\noutput+="') +
+      ';return output;'
   );
 }
 
