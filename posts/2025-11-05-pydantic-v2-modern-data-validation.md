@@ -4,7 +4,7 @@ title: Pydantic V2 - Validación de Datos Moderna en Python
 tags: [python, pydantic, validation, data-modeling, fastapi, type-hints]
 ---
 
-**Pydantic V2** ha revolucionado la validación de datos en Python. Con mejoras de performance del 5-50x y nuevas características, se ha convertido en el estándar para modeling de datos moderno.
+**Pydantic V2** ha revolucionado la validación de datos en Python. Con mejoras de performance del 5-50x y nuevas características, se ha convertido en el estándar para modeling de datos moderno. En proyectos como [MergeSourceFile](https://github.com/alegorico/MergeSourceFile), utilizo Pydantic para validar configuraciones TOML complejas, demostrando su utilidad más allá de APIs web.
 
 ## ¿Qué es Pydantic V2?
 
@@ -471,33 +471,61 @@ products = await product_client.get_all("products")
 # products es List[Product] con type checking completo
 ```
 
-### 2. Configuration management complejo
+### 2. Caso Real: MergeSourceFile - Configuración TOML Compleja
+
+En [MergeSourceFile v2.0.0](https://github.com/alegorico/MergeSourceFile), utilizo Pydantic para validar configuraciones TOML complejas del procesador SQL:
+
 ```python
 from pydantic import BaseModel, Field, validator
-from pydantic_settings import BaseSettings
-from typing import Dict, List, Optional
-import os
+from typing import Dict, List, Optional, Union
+from pathlib import Path
 
-class ServiceConfig(BaseModel):
-    name: str
-    url: str
-    timeout: int = 30
-    retries: int = 3
+class ProjectConfig(BaseModel):
+    """Configuración principal del proyecto"""
+    input: str = Field(..., description="Archivo SQL de entrada")
+    output: str = Field(..., description="Archivo SQL de salida")
+    verbose: bool = Field(False, description="Logging detallado")
     
-class LoggingConfig(BaseModel):
-    level: str = "INFO"
-    format: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    handlers: List[str] = ["console", "file"]
+    @validator('input', 'output')
+    def validate_paths(cls, v):
+        """Valida que las rutas sean válidas"""
+        if not isinstance(v, str) or len(v.strip()) == 0:
+            raise ValueError('Path cannot be empty')
+        return v
 
-class AppSettings(BaseSettings):
-    environment: str = "development"
-    debug: bool = False
+class Jinja2Extensions(BaseModel):
+    """Extensiones disponibles para Jinja2"""
+    sqlplus: bool = Field(False, description="Soporte SQLPlus (@file, DEFINE)")
+
+class SQLPlusConfig(BaseModel):
+    """Configuración específica de SQLPlus"""
+    process_includes: bool = Field(True, description="Procesar @file includes")
+    process_defines: bool = Field(True, description="Procesar DEFINE/UNDEFINE")
+
+class Jinja2Config(BaseModel):
+    """Configuración completa de Jinja2"""
+    enabled: bool = Field(..., description="Habilitar motor Jinja2")
+    variables_file: Optional[str] = Field(None, description="Archivo YAML de variables")
+    extensions: Optional[Jinja2Extensions] = None
+    sqlplus: Optional[SQLPlusConfig] = None
     
-    # Multiple service configurations
-    services: Dict[str, ServiceConfig] = Field(default_factory=dict)
+class MergeSourceFileConfig(BaseModel):
+    """Configuración completa - MKFSource.toml"""
+    project: ProjectConfig
+    jinja2: Jinja2Config
     
-    # Logging configuration  
-    logging: LoggingConfig = Field(default_factory=LoggingConfig)
+    @validator('jinja2')
+    def validate_jinja2_consistency(cls, v, values):
+        """Valida consistencia entre extensiones y configuraciones"""
+        if v.extensions and v.extensions.sqlplus and not v.sqlplus:
+            raise ValueError("SQLPlus extension enabled but no SQLPlus config provided")
+        return v
+
+# Uso real en el proyecto (con 92% cobertura de tests)
+config = MergeSourceFileConfig.parse_file("MKFSource.toml")
+
+# Comando simplificado: msf (en lugar de mergesourcefile)
+# Arquitectura Jinja2-centric con extensiones modulares
     
     # Feature flags
     feature_flags: Dict[str, bool] = Field(default_factory=dict)

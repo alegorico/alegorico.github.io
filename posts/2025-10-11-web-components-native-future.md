@@ -4,7 +4,7 @@ title: Web Components Nativos - El Futuro Sin Frameworks
 tags: [web-components, custom-elements, shadow-dom, html, javascript, future]
 ---
 
-Los **Web Components** han madurado en 2025 y ofrecen una alternativa poderosa a frameworks complejos. Descubre cómo crear componentes reutilizables usando solo APIs nativas del navegador.
+Los **Web Components** han madurado en 2025 y ofrecen una alternativa poderosa a frameworks complejos. He explorado este paradigma trabajando con proyectos como [framework-less-web-components](https://github.com/alegorico/framework-less-web-components), que demuestra implementaciones puras sin dependencias. Descubre cómo crear componentes reutilizables usando solo APIs nativas del navegador.
 
 ## ¿Qué son los Web Components?
 
@@ -31,6 +31,17 @@ Un conjunto de APIs estándar que nos permiten crear elementos HTML personalizad
 - Funciona con React, Vue, Angular
 - O completamente standalone
 - Migración incremental posible
+
+## Mi Experiencia con Framework-less Web Components
+
+En mi fork del proyecto [framework-less-web-components](https://github.com/alegorico/framework-less-web-components), he experimentado con implementaciones puras que demuestran el poder de los Web Components nativos. El proyecto explora patrones sin frameworks para crear componentes robustos y reutilizables.
+
+**Ventajas observadas en proyectos reales:**
+- **Zero dependencies**: No runtime overhead de frameworks
+- **Interoperabilidad total**: Funcionan en cualquier contexto (React, Vue, vanilla)
+- **Longevidad**: APIs estables del browser, no churn de frameworks 
+- **Performance nativo**: Renderizado optimizado por el navegador
+- **Bundle size**: Componentes minimalistas sin bloat
 
 ## Construyendo tu primer componente
 

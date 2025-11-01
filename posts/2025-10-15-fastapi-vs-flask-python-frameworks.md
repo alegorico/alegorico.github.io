@@ -4,7 +4,7 @@ title: FastAPI vs Flask - Batalla de Frameworks Python 2025
 tags: [python, fastapi, flask, api, async, performance, web-development]
 ---
 
-En 2025, la elección entre **FastAPI** y **Flask** sigue siendo uno de los debates más candentes en el ecosistema Python. Analicemos cuándo usar cada uno y por qué FastAPI está ganando terreno.
+En 2025, la elección entre **FastAPI** y **Flask** sigue siendo uno de los debates más candentes en el ecosistema Python. Como desarrollador que ha trabajado extensivamente con ambos frameworks, incluyendo proyectos como [Flask-WebApi-demo](https://github.com/alegorico/Flask-WebApi-demo) (un gestor de contactos con arquitectura modular), analicemos cuándo usar cada uno y por qué FastAPI está ganando terreno.
 
 ## TL;DR - ¿Cuál elegir?
 
@@ -107,6 +107,28 @@ class Product(BaseModel):
 ```
 
 ## Flask: La flexibilidad que nunca pasa de moda
+
+### Mi Experiencia Práctica con Flask
+
+He desarrollado múltiples proyectos con Flask, siendo el más representativo [Flask-WebApi-demo](https://github.com/alegorico/Flask-WebApi-demo), un gestor de contactos que demuestra patrones modernos de Flask:
+
+**Características del proyecto:**
+- **Arquitectura modular** con blueprints (`config/` y `generador/`)
+- **API RESTful** completa en `/api/v1/contactos`
+- **Frontend integrado** que consume la API con JavaScript
+- **Configuración por entornos** para desarrollo/producción
+- **Gestión de estado en memoria** ideal para prototipos
+
+```python
+# Estructura típica Flask - Flask-WebApi-demo
+flask-webapi-demo/
+├── config/           # Configuración por entornos
+├── generador/        # Lógica de negocio modular
+├── entrypoint.py     # Punto de entrada de la aplicación
+└── requirements.txt  # Dependencias explícitas
+```
+
+El acceso principal es por `http://localhost:5000/gen/`, demostrando cómo Flask permite crear tanto APIs como interfaces web en el mismo proyecto con total flexibilidad.
 
 ### Cuándo Flask sigue siendo mejor
 
