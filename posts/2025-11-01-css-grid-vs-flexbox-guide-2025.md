@@ -1,10 +1,10 @@
 ---
 layout: post
-title: CSS Grid vs Flexbox - Guía Definitiva 2025
+title: CSS Grid vs Flexbox - Guía Definitiva 2021
 tags: [css, grid, flexbox, layout, responsive, design]
 ---
 
-Una de las preguntas más frecuentes en desarrollo frontend: **¿cuándo usar CSS Grid y cuándo Flexbox?** En 2025, ambas tecnologías han madurado y cada una tiene su lugar específico.
+Una de las preguntas más frecuentes en desarrollo frontend: **¿cuándo usar CSS Grid y cuándo Flexbox?** En 2021, ambas tecnologías han madurado y cada una tiene su lugar específico.
 
 ## TL;DR - Cuándo usar cada uno
 
@@ -43,7 +43,7 @@ Una de las preguntas más frecuentes en desarrollo frontend: **¿cuándo usar CS
 }
 ```
 
-### Propiedades clave 2025
+### Propiedades clave 2021
 ```css
 .flex-container {
   display: flex;
@@ -94,7 +94,7 @@ Una de las preguntas más frecuentes en desarrollo frontend: **¿cuándo usar CS
   gap: 1rem;
 }
 
-/* Masonry layout nativo (2025) */
+/* Masonry layout nativo (2021) */
 .masonry {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -128,7 +128,7 @@ Una de las preguntas más frecuentes en desarrollo frontend: **¿cuándo usar CS
 }
 ```
 
-## Técnicas avanzadas 2025
+## Técnicas avanzadas 2021
 
 ### Subgrid (¡Ya disponible!)
 ```css
@@ -189,7 +189,7 @@ Una de las preguntas más frecuentes en desarrollo frontend: **¿cuándo usar CS
 
 ## Conclusión
 
-En 2025, la combinación de CSS Grid y Flexbox nos da superpoderes para crear layouts que antes requerían frameworks complejos. La clave está en:
+En 2021, la combinación de CSS Grid y Flexbox nos da superpoderes para crear layouts que antes requerían frameworks complejos. La clave está en:
 
 1. **Grid** para la arquitectura general
 2. **Flexbox** para componentes y alineación
