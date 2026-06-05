@@ -1,6 +1,0 @@
-.DS_Store
-node_modules/*
-release/*
-*.swp
-npm-debug.log
-examples/js/cms.js
