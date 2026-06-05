@@ -4,4 +4,4 @@ release/*
 *.swp
 npm-debug.log
 dist/cms.js
-examples/js/cms.js
+examples/dist/*

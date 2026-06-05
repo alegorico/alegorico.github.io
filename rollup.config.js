@@ -47,7 +47,7 @@ if (production) {
   });
   // También generar para examples durante desarrollo
   outputs.push({
-    file: 'examples/js/cms.js',
+    file: 'examples/dist/cms.js',
     name: 'CMS',
     format: 'iife',
     banner: banner

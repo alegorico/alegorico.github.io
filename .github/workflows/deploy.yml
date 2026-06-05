@@ -1,0 +1,46 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build CMS.js Engine
+        run: npm run build
+
+      - name: Prepare examples deployment
+        run: |
+          # Asegurar que el directorio de salida del build existe en examples
+          mkdir -p examples/dist
+          # Copiar el archivo compilado dist/cms.js a la carpeta de examples para que el index.html lo encuentre en producción
+          cp dist/cms.js examples/dist/cms.js
+          # Copiar .nojekyll a la carpeta examples para asegurar que GitHub Pages desactive Jekyll
+          touch examples/.nojekyll
+
+      - name: Deploy Folder contents to gh-pages root
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: examples
+          branch: gh-pages
+          clean: true
