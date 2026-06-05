@@ -45,13 +45,6 @@ if (production) {
     format: 'iife',
     banner: banner
   });
-  // También generar para examples durante desarrollo
-  outputs.push({
-    file: 'examples/dist/cms.js',
-    name: 'CMS',
-    format: 'iife',
-    banner: banner
-  });
 }
 
 export default {
