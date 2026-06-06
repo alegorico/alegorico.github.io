@@ -51,6 +51,7 @@ export function extend(target, opts, callback) {
  * @returns {string} Name of function.
  */
 export function getFunctionName(func) {
+  if (func.name) return func.name;
   var ret = func.toString();
   ret = ret.substr('function '.length);
   ret = ret.substr(0, ret.indexOf('('));

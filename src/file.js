@@ -61,8 +61,14 @@ class File {
     if (yaml) {
       var attributes = {};
       yaml.split(/\n/g).forEach(attributeStr => {
-        var attribute = attributeStr.split(':');
-        attribute[1] && (attributes[attribute[0].trim()] = attribute[1].trim());
+        var index = attributeStr.indexOf(':');
+        if (index > -1) {
+          var key = attributeStr.substring(0, index).trim();
+          var val = attributeStr.substring(index + 1).trim();
+          if (val) {
+            attributes[key] = val;
+          }
+        }
       });
       extend(this, attributes, null);
     }
@@ -78,7 +84,11 @@ class File {
   setListAttributes() {
     this.config.listAttributes.forEach(attribute => {
       if (Object.prototype.hasOwnProperty.call(this, attribute) && this[attribute]) {
-        this[attribute] = this[attribute].split(',').map(item => {
+        var val = this[attribute].trim();
+        if (val.indexOf('[') === 0 && val.indexOf(']') === val.length - 1) {
+          val = val.substring(1, val.length - 1);
+        }
+        this[attribute] = val.split(',').map(item => {
           return item.trim();
         });
       }

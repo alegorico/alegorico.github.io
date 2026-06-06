@@ -8,14 +8,28 @@ import { messages as msg, handleMessage } from './messages';
  * @returns {string} Rendered template with injected data.
  */
 export function Templater(text) {
-  return new Function(
-    'data',
-    'var output=' +
-      JSON.stringify(text)
-        .replace(/<%=(.+?)%>/g, '"+($1)+"')
-        .replace(/<%(.+?)%>/g, '";$1\noutput+="') +
-      ';return output;'
-  );
+  var code = 'var output="";';
+  var index = 0;
+  var regex = /<%=(.+?)%>|<%([\s\S]+?)%>/g;
+  var match;
+  while ((match = regex.exec(text)) !== null) {
+    var html = text.slice(index, match.index);
+    if (html) {
+      code += 'output+=' + JSON.stringify(html) + ';';
+    }
+    if (match[1] !== undefined) {
+      code += 'output+=(' + match[1] + ');';
+    } else if (match[2] !== undefined) {
+      code += match[2] + '\n';
+    }
+    index = regex.lastIndex;
+  }
+  var remaining = text.slice(index);
+  if (remaining) {
+    code += 'output+=' + JSON.stringify(remaining) + ';';
+  }
+  code += 'return output;';
+  return new Function('data', code);
 }
 
 /**
@@ -28,7 +42,10 @@ export function Templater(text) {
  */
 export function loadTemplate(url, data, callback) {
   get(url, (success, error) => {
-    if (error) callback(success, error);
+    if (error) {
+      callback(success, error);
+      return;
+    }
     callback(Templater(success)(data), error);
   });
 }

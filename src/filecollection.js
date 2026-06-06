@@ -107,6 +107,10 @@ class FileCollection {
    */
   loadFiles(callback) {
     var promises = [];
+    if (this.files.length === 0) {
+      callback(null, null);
+      return;
+    }
     // Load file content
     this.files.forEach((file, i) => {
       file.getContent((success, error) => {
@@ -130,7 +134,7 @@ class FileCollection {
    */
   search(attribute, search) {
     this[this.type] = this.files.filter(file => {
-      var attr = file[attribute].toLowerCase().trim();
+      var attr = (file[attribute] || '').toLowerCase().trim();
       return attr.indexOf(search.toLowerCase().trim()) >= 0;
     });
   }

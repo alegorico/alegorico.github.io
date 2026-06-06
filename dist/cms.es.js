@@ -85,7 +85,13 @@ function createMessageContainer(classname) {
  * Used for debugging purposes.
  */
 function handleMessage(debug, message) {
-  if (debug) messageContainer.innerHTML = message;
+  if (message === undefined) {
+    message = debug;
+    debug = true;
+  }
+  if (debug && messageContainer) {
+    messageContainer.innerHTML = message;
+  }
   return message;
 }
 
@@ -139,6 +145,7 @@ function extend(target, opts, callback) {
  * @returns {string} Name of function.
  */
 function getFunctionName(func) {
+  if (func.name) return func.name;
   var ret = func.toString();
   ret = ret.substr('function '.length);
   ret = ret.substr(0, ret.indexOf('('));
@@ -228,7 +235,28 @@ function getFilenameFromPath(filepath) {
  * @returns {string} Rendered template with injected data.
  */
 function Templater(text) {
-  return new Function('data', 'var output=' + JSON.stringify(text).replace(/<%=(.+?)%>/g, '"+($1)+"').replace(/<%(.+?)%>/g, '";$1\noutput+="') + ';return output;');
+  var code = 'var output="";';
+  var index = 0;
+  var regex = /<%=(.+?)%>|<%([\s\S]+?)%>/g;
+  var match;
+  while ((match = regex.exec(text)) !== null) {
+    var html = text.slice(index, match.index);
+    if (html) {
+      code += 'output+=' + JSON.stringify(html) + ';';
+    }
+    if (match[1] !== undefined) {
+      code += 'output+=(' + match[1] + ');';
+    } else if (match[2] !== undefined) {
+      code += match[2] + '\n';
+    }
+    index = regex.lastIndex;
+  }
+  var remaining = text.slice(index);
+  if (remaining) {
+    code += 'output+=' + JSON.stringify(remaining) + ';';
+  }
+  code += 'return output;';
+  return new Function('data', code);
 }
 
 /**
@@ -241,7 +269,10 @@ function Templater(text) {
  */
 function loadTemplate(url, data, callback) {
   get(url, function (success, error) {
-    if (error) callback(success, error);
+    if (error) {
+      callback(success, error);
+      return;
+    }
     callback(Templater(success)(data), error);
   });
 }
@@ -325,7 +356,7 @@ var Markdown = /*#__PURE__*/function () {
     {
       regex: /&&&[a-z]*\n[\s\S]*?\n&&&/g,
       replacement: function replacement(text) {
-        text = text.replace(/```/gm, '');
+        text = text.replace(/&&&/gm, '');
         return '<script type="text/javascript">' + text.trim() + '</script>';
       }
     },
@@ -373,12 +404,12 @@ var Markdown = /*#__PURE__*/function () {
     },
     // fix extra ul
     {
-      regex: /<\/ul>\s?<ul>/g,
+      regex: /<\/ul>\s*<ul>/g,
       replacement: ''
     },
     // fix extra ol
     {
-      regex: /<\/ol>\s?<ol>/g,
+      regex: /<\/ol>\s*<ol>/g,
       replacement: ''
     },
     // fix extra blockquote
@@ -464,8 +495,14 @@ var File = /*#__PURE__*/function () {
       if (yaml) {
         var attributes = {};
         yaml.split(/\n/g).forEach(function (attributeStr) {
-          var attribute = attributeStr.split(':');
-          attribute[1] && (attributes[attribute[0].trim()] = attribute[1].trim());
+          var index = attributeStr.indexOf(':');
+          if (index > -1) {
+            var key = attributeStr.substring(0, index).trim();
+            var val = attributeStr.substring(index + 1).trim();
+            if (val) {
+              attributes[key] = val;
+            }
+          }
         });
         extend(this, attributes);
       }
@@ -484,7 +521,11 @@ var File = /*#__PURE__*/function () {
       var _this2 = this;
       this.config.listAttributes.forEach(function (attribute) {
         if (Object.prototype.hasOwnProperty.call(_this2, attribute) && _this2[attribute]) {
-          _this2[attribute] = _this2[attribute].split(',').map(function (item) {
+          var val = _this2[attribute].trim();
+          if (val.indexOf('[') === 0 && val.indexOf(']') === val.length - 1) {
+            val = val.substring(1, val.length - 1);
+          }
+          _this2[attribute] = val.split(',').map(function (item) {
             return item.trim();
           });
         }
@@ -702,6 +743,10 @@ var FileCollection = /*#__PURE__*/function () {
     value: function loadFiles(callback) {
       var _this3 = this;
       var promises = [];
+      if (this.files.length === 0) {
+        callback(null, null);
+        return;
+      }
       // Load file content
       this.files.forEach(function (file, i) {
         file.getContent(function (success, error) {
@@ -727,7 +772,7 @@ var FileCollection = /*#__PURE__*/function () {
     key: "search",
     value: function search(attribute, _search) {
       this[this.type] = this.files.filter(function (file) {
-        var attr = file[attribute].toLowerCase().trim();
+        var attr = (file[attribute] || '').toLowerCase().trim();
         return attr.indexOf(_search.toLowerCase().trim()) >= 0;
       });
     }
@@ -893,10 +938,15 @@ var CMS = /*#__PURE__*/function () {
       }
       // List and single views
       else {
-        if (filename) {
+        if (filename && collection) {
           // Single view
           var permalink = ['#', type, filename.trim()].join('/');
-          collection.getFileByPermalink(permalink).render();
+          var file = collection.getFileByPermalink(permalink);
+          if (file) {
+            file.render();
+          } else {
+            renderLayout(this.config.errorLayout, this.config, {});
+          }
         } else if (collection) {
           // List view
           if (query) {

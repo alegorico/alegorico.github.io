@@ -34,7 +34,13 @@ function createMessageContainer(classname) {
  * Used for debugging purposes.
  */
 function handleMessage(debug, message) {
-  if (debug) messageContainer.innerHTML = message;
+  if (message === undefined) {
+    message = debug;
+    debug = true;
+  }
+  if (debug && messageContainer) {
+    messageContainer.innerHTML = message;
+  }
   return message;
 }
 

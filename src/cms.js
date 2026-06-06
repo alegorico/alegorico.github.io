@@ -104,10 +104,15 @@ class CMS {
     }
     // List and single views
     else {
-      if (filename) {
+      if (filename && collection) {
         // Single view
         const permalink = ['#', type, filename.trim()].join('/');
-        collection.getFileByPermalink(permalink).render();
+        const file = collection.getFileByPermalink(permalink);
+        if (file) {
+          file.render();
+        } else {
+          renderLayout(this.config.errorLayout, this.config, {});
+        }
       } else if (collection) {
         // List view
         if (query) {

@@ -39,7 +39,7 @@ class Markdown {
       {
         regex: /&&&[a-z]*\n[\s\S]*?\n&&&/g,
         replacement: text => {
-          text = text.replace(/```/gm, '');
+          text = text.replace(/&&&/gm, '');
           return '<script type="text/javascript">' + text.trim() + '</script>';
         }
       },
@@ -80,9 +80,9 @@ class Markdown {
         }
       },
       // fix extra ul
-      { regex: /<\/ul>\s?<ul>/g, replacement: '' },
+      { regex: /<\/ul>\s*<ul>/g, replacement: '' },
       // fix extra ol
-      { regex: /<\/ol>\s?<ol>/g, replacement: '' },
+      { regex: /<\/ol>\s*<ol>/g, replacement: '' },
       // fix extra blockquote
       { regex: /<\/blockquote><blockquote>/g, replacement: '\n' }
     ];
