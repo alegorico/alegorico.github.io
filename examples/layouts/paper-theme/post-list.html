@@ -1,0 +1,65 @@
+<div class="row">
+  <!-- Sidebar using SimpleGrid classes -->
+  <div class="col-12 col-md-3">
+    <div class="card sidebar">
+      <div class="card-body">
+        <h3 class="brand-title">AlegoricSite</h3>
+        <p class="brand-tagline">My site</p>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a class="paper-btn" href="#/posts">Posts</a>
+          </li>
+          <li class="nav-item">
+            <a class="paper-btn btn-secondary" href="https://github.com/alegorico" target="_blank">Github</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Content area using SimpleGrid classes -->
+  <div class="col-12 col-md-9 content">
+    <h2 class="content-title">Recent Posts</h2>
+    <div class="posts-list">
+      <% data.posts.forEach(function(post) { %>
+        <% if(!post.draft) { %>
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">
+                <a href="<%= post.permalink %>"><%= post.title %></a>
+              </h3>
+              <div class="card-subtitle">
+                <% if(post.date) { %>
+                  <span>📅 <%= post.date %></span>
+                <% } %>
+                <% if(post.author) { %>
+                  <span>👤 <%= post.author %></span>
+                <% } %>
+                <% if(post.tags) { %>
+                  <% post.tags.forEach(function(tag) { %>
+                    <% if(tag) { %>
+                      <a class="badge secondary" href="#/posts?tag=<%= tag %>">#<%= tag %></a>
+                    <% } %>
+                  <% }) %>
+                <% } %>
+              </div>
+              <p class="card-text">
+                <% if(post.excerpt) { %>
+                  <%= post.excerpt %>
+                <% } %>
+              </p>
+              <a class="paper-btn btn-primary-outline" href="<%= post.permalink %>">Leer más</a>
+            </div>
+          </div>
+        <% } %>
+      <% }) %>
+    </div>
+    
+    <div class="footer">
+      <ul>
+        <li><a href="#/posts">Posts</a></li>
+        <li><a href="https://github.com/alegorico" target="_blank">Github</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

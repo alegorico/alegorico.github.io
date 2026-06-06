@@ -1,114 +1,29 @@
-![CMS.js Logo](https://raw.githubusercontent.com/chrisdiana/cms.js/gh-pages/img/logo-md.png)
+# CMS.js - Generador Estático del Lado del Cliente
 
-CMS.js is a fully **C**lient-side, JavaScript **M**arkdown **S**ite generator in the spirit of [Jekyll](https://github.com/jekyll/jekyll) that uses plain ol' HTML, CSS and JavaScript to generate your website. CMS.js is like a file-based CMS.
-It takes your content, renders Markdown and delivers a complete website in Single-Page App fashion...without the aid of server-side scripting (no Node.js, PHP, Ruby, etc.).
+Este repositorio contiene el código fuente y las herramientas de compilación para **CMS.js**, un motor de generación de sitios estáticos basado en Markdown que se ejecuta completamente en el lado del cliente (Single-Page App).
 
-![CMS.js Screenshot](https://raw.githubusercontent.com/chrisdiana/cms.js/gh-pages/img/screenshot.png)
+## Propósito del Paquete
 
+Este paquete se encarga de compilar y optimizar el núcleo de **CMS.js**. El motor toma tus archivos HTML de diseño (layouts), lee publicaciones escritas en Markdown y las renderiza directamente en el navegador del usuario a tiempo de ejecución, eliminando la necesidad de compiladores en el servidor o bases de datos complejas.
 
-[![Join the chat at https://discord.gg/A2cHjg3](https://img.shields.io/discourse/https/meta.discourse.org/status.svg)](https://discord.gg/A2cHjg3)
-[![Join the chat at https://gitter.im/cms-js/community](https://badges.gitter.im/cms-js/community.svg)](https://gitter.im/cms-js/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-![Version](https://img.shields.io/github/package-json/v/chrisdiana/cms.js.svg)
-[![npm version](https://badge.fury.io/js/%40chrisdiana%2Fcmsjs.svg)](https://badge.fury.io/js/%40chrisdiana%2Fcmsjs)
-![License](https://img.shields.io/github/license/chrisdiana/cms.js.svg)
+## Desarrollo y Compilación
 
+Las herramientas de construcción están basadas en Rollup y Babel. Puedes compilar el motor utilizando los siguientes comandos:
 
-<p align="center">
-  <span>English</span> |
-  <a href="./README-zh.md">简体中文</a>
-</p>
+* **Instalar dependencias**:
+  ```bash
+  npm install
+  ```
+* **Compilar para producción**:
+  ```bash
+  npm run build
+  ```
+  *(Esto genera los archivos listos para usar en `dist/cms.js`, `dist/cms.es.js` y `dist/cms.min.js`)*.
+* **Modo de desarrollo**:
+  ```bash
+  npm run dev
+  ```
+  *(Levanta un servidor local en el puerto 3000 y compila automáticamente al detectar cambios)*.
 
-
-[Website](http://chrisdiana.github.io/cms.js/) • [Docs](https://github.com/chrisdiana/cms.js/wiki) • [Newsletter](http://eepurl.com/dN-e3j) • [Demo](http://chrisdiana.github.io/cms.js/demo)
-
-
-## New Features in Version 2
-
-* Zero dependencies
-* Abstract types
-* Custom Templates
-* Search, Filtering, Tagging and Sorting
-* Github & Server Mode
-* Extendable Markdown Renderer and Plugins
-* Super small footprint - 10kb minified
-
-
-## Demo
-
-Check out a working [demo here](http://chrisdiana.github.io/cms.js/demo)
-
-
-## Quick Start
-
-CMS.js supports two website modes, Github and Server. Host your website on Github using Github Pages (similar to Jekyll) or use Server mode if you choose to self host your content. Learn more about server mode and setup [here](https://github.com/chrisdiana/cms.js/wiki/Server-Mode).
-
-1. Clone the [starter repo](https://github.com/chrisdiana/cms.js-starter): `git clone https://github.com/chrisdiana/cms.js-starter.git` or download the [latest release here](https://github.com/chrisdiana/cms.js/releases/latest)
-2. Configure `js/config.js` to your liking
-3. Make sure to set your Github settings in `js/config.js` if using Github mode
-4. If using Github mode, create a new branch from your master or working branch called `gh-pages` (Github's default branch for hosting)
-5. Visit your site! (which should be located at `https://yourusername.github.io/cms.js-starter`)
-
-
-## CDN
-
-You can also get started using the CDN:
-```
-<script src="https://unpkg.com/@chrisdiana/cmsjs"></script>
-```
-
-
-## Themes
-
-Try out CMS.js with a variety of popular CSS frameworks such as Bootstrap, Foundation, and Bulma. Check out all the themes [available here](https://chrisdiana.github.io/cms.js-themes).
-
-![CMS.js Themes](./img/themes.png)
-
-
-## Documentation
-Check out the rest of the documentation on how to use configuration settings, options, etc. at the [Wiki](https://github.com/chrisdiana/cms.js/wiki).
-
-
-## How it works
-
-**Github Mode**
-
-In Github mode, CMS.js uses the Github API to get the content of your repo and serve them as a full website.
-
-**Server Mode**
-
-In Server mode, CMS.js takes advantage of the Server's Directory Indexing feature. By allowing indexes, CMS.js sends an AJAX call to your specified folders and looks for Markdown or HTML files.
-After they are found, it takes care of everything else and delivers a full website.
-
-
-## Migration from Jekyll
-
-**Importing Posts**
-
-Once CMS.js is installed and running, simply copy all of your posts from your Jekyll project's `_post` folder to your designated CMS.js posts folder.
-
-**Importing Pages**
-
-Copy all of your Markdown pages from your Jekyll projects root folder into your designated CMS.js pages folder.
-
-
-## Coming soon!
-
-* Pagination
-* Template caching
-* Loader
-* CLI Utilities
-
-
-## Thanks!
-
-* [Poole](https://github.com/poole/poole) (*Default Theme*)
-
-
-## Contributing
-
-All forms of contribution are welcome: bug reports, bug fixes, pull requests and simple suggestions. If you do wish to contribute, please check out the [Contributing Guide](https://github.com/chrisdiana/cms.js/wiki/Contributing-Guide) before making a pull request. Thanks!
-
-
-## List of contributors
-
-You can find the list of contributors [here](https://github.com/chrisdiana/cms.js/graphs/contributors).
+---
+*🚀 Construido con Rollup, Babel y tecnologías web modernas para la generación del lado del cliente.*

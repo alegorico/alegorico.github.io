@@ -1,3 +1,6 @@
+@import url('https://unpkg.com/purecss@3.0.0/build/pure-min.css');
+@import url('https://unpkg.com/purecss@3.0.0/build/grids-responsive-min.css');
+
 /* Custom styles for AlegoricSite with SimpleGrid */
 /* Modern CSS - No IE support */
 
