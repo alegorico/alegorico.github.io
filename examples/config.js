@@ -16,7 +16,7 @@ var config = {
   },
 
   // The name of the layouts directory.
-  layoutDirectory: 'layouts/paper-theme',
+  layoutDirectory: 'layouts/paper-blog',
 
   // The error layout template name.
   errorLayout: 'error',
