@@ -1,6 +1,6 @@
 import { renderLayout } from './templater';
 import { get, extend, getDatetime } from './utils';
-import Markdown from './markdown';
+import { marked } from 'marked';
 
 /**
  * Represents a file.
@@ -150,8 +150,7 @@ class File {
       if (this.config.markdownEngine) {
         this.body = this.config.markdownEngine(html);
       } else {
-        var md = new Markdown();
-        this.body = md.render(html);
+        this.body = marked.parse(html);
       }
     }
   }
