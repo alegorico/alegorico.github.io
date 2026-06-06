@@ -19,52 +19,22 @@
     <!-- SimpleGrid CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/my-simplegrid@latest/dist/simplegrid.min.css">
     
-    <!-- Custom Modern Styles -->
-    <link rel="stylesheet" href="custom.css">
+    <!-- Config -->
+    <script src="config.js"></script>
+    <!-- Dynamic Theme Styling -->
+    <script>
+      if (typeof config !== 'undefined' && config.layoutDirectory) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = config.layoutDirectory + '/theme.css';
+        document.head.appendChild(link);
+      }
+    </script>
     <noscript>Please enable JavaScript to view this site.</noscript>
   </head>
   <body>
-    <!-- Container using SimpleGrid -->
-    <div class="container">
-      <div class="row">
-        <!-- Sidebar using SimpleGrid classes -->
-        <div class="col-12 col-md-3 sidebar">
-          <div class="header">
-            <h1 class="brand-title">AlegoricSite</h1>
-            <h2 class="brand-tagline">My site</h2>
-            <nav class="nav">
-              <ul class="nav-list">
-                <li class="nav-item">
-                  <a class="pure-button" href="#/posts">Posts</a>
-                </li>
-                <li class="nav-item">
-                  <a class="pure-button" href="https://github.com/alegorico" target="_blank">Github</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-        <!-- Content area using SimpleGrid classes -->
-        <div class="col-12 col-md-9 content">
-        <div>
-          <!-- A wrapper for all the blog posts -->
-          <div class="posts">
-            
-            <!-- CMS -->
-            <div id="cms"></div>
-            
-          </div>
-          <div class="footer">
-            <div class="pure-menu pure-menu-horizontal">
-              <ul>
-                <li class="pure-menu-item"><a href="#/posts" class="pure-menu-link">Posts</a></li>
-                <li class="pure-menu-item"><a href="https://github.com/alegorico" class="pure-menu-link">Github</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- CMS container where the theme templates (built on my-simplegrid) will render -->
+    <div id="cms"></div>
     
     <!-- Modern browser check -->
     <script>
@@ -76,7 +46,10 @@
     </script>
     <!-- CMS.js -->
     <script src="../dist/cms.js"></script>
-    <!-- Config -->
-    <script src="config.js"></script>
+    <script>
+      // Initialize CMS.js after DOM elements are loaded
+      console.log('Initializing CMS with config:', config);
+      var blog = CMS(config);
+    </script>
   </body>
 </html>
